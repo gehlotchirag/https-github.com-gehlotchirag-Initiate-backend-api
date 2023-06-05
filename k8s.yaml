@@ -1,0 +1,38 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "initiate-backend"
+  namespace: "default"
+  labels:
+    app: "initiate-backend"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "initiate-backend"
+  template:
+    metadata:
+      labels:
+        app: "initiate-backend"
+    spec:
+      containers:
+        - name: "initiate-backend-image"
+          image: "033385524530.dkr.ecr.ap-south-1.amazonaws.com/initiate-backend:latest"
+
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "initiate-backend-service"
+  namespace: "default"
+  labels:
+    app: "initiate-backend"
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 5000
+  selector:
+    app: "initiate-backend"
+  type: "LoadBalancer"
